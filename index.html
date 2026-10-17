@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f766e">
+  <title>СЫТА — сервис готового питания</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+       <a href="#home" class="logo">
+            <span class="logo__mark">С</span>
+            <span class="logo__text">СЫТА</span>
+      </a>
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Мобильное меню -->
+  <nav class="nav" id="nav">
+    <ul class="nav__list">
+      <li><a href="#menu" class="nav__link" data-section="menu">Меню</a></li>
+      <li><a href="#quiz" class="nav__link" data-section="quiz">Подобрать блюдо</a></li>
+      <li><a href="#reviews" class="nav__link" data-section="reviews">Отзывы</a></li>
+      <li><a href="#locations" class="nav__link" data-section="locations">Где нас найти</a></li>
+      <li><a href="#cart" class="nav__link nav__link--cart" data-section="cart">
+        Корзина <span class="cart-count" id="cartCount">0</span>
+      </a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="container">
+        <h1 class="hero__title">Горячие блюда —<br>когда удобно вам</h1>
+        <p class="hero__subtitle">Сервис готовых блюд и напитков через автоматы самообслуживания. Ответьте на 3 коротких вопроса — и мы подберём обед под ваш ритм дня.</p>
+        <div class="hero__actions">
+          <a href="#quiz" class="btn btn--primary">Подобрать блюдо</a>
+          <a href="#menu" class="btn btn--ghost">Смотреть меню</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Меню -->
+    <section class="section" id="menu">
+      <div class="container">
+        <h2 class="section__title">Меню</h2>
+        <p class="section__subtitle">Все блюда готовятся ежедневно. Характеристики указаны на порцию.</p>
+
+        <div class="tabs" id="categoryTabs">
+          <button class="tab tab--active" data-category="all">Все</button>
+          <button class="tab" data-category="soups">Супы</button>
+          <button class="tab" data-category="mains">Вторые блюда</button>
+          <button class="tab" data-category="snacks">Перекусы</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+          <!-- Карточки рендерятся из JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Опросник -->
+    <section class="section section--alt" id="quiz">
+      <div class="container">
+        <h2 class="section__title">Подберём обед под вас</h2>
+        <p class="section__subtitle">Три коротких вопроса — и мы покажем блюда, которые подойдут именно вам.</p>
+
+        <div class="quiz" id="quizContainer">
+          <!-- Содержимое опросника рендерится из JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <h2 class="section__title">Отзывы</h2>
+        <p class="section__subtitle section__subtitle--note">Примеры для демонстрации. Реальные отзывы появятся после запуска сервиса.</p>
+        <div class="reviews-grid" id="reviewsGrid">
+          <!-- Рендерится из JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Карта -->
+    <section class="section section--alt" id="locations">
+      <div class="container">
+        <h2 class="section__title">Где нас найти</h2>
+        <p class="section__subtitle">Места установки автоматов планируются. Ниже — ориентировочная схема.</p>
+        <div class="map" id="map">
+          <!-- SVG-макет рендерится из JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Корзина -->
+    <section class="section" id="cart">
+      <div class="container">
+        <h2 class="section__title">Корзина</h2>
+        <div class="cart" id="cartContainer">
+          <p class="cart__empty">Корзина пуста. Выберите блюда в меню.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Business Key. Демонстрационный сайт.</p>
+    </div>
+  </footer>
+
+  <!-- Модалка подробной информации о блюде -->
+  <div class="modal" id="itemModal" hidden>
+    <div class="modal__overlay" data-close></div>
+    <div class="modal__content">
+      <button class="modal__close" data-close aria-label="Закрыть">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Скрипты -->
+  <script src="js/menu-data.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/recommendations.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
