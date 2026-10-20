@@ -3,159 +3,159 @@
 // Если характеристика неизвестна — null (на фронте отображается как «Уточняется»).
 
 const MENU_ITEMS = [
-  {
+    {
     id: 1,
-    name: 'Куриный суп',
-    category: 'soups', // soups | mains | snacks
+    name: "Суп-лапша с курицей",
+    category: "soups",
     weight: 300,
     kcal: 270,
     proteins: 12,
     fats: 18,
     carbs: 15,
     purchasePrice: 215,
-    price: 247,
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600',
-    description: 'Классический куриный суп с овощами и зеленью.'
+    price: 320,
+    images: ["assets/images/soup-chicken-1.jpg", "assets/images/soup-chicken-2.jpg"],
+    description: "Наваристый куриный суп с домашней лапшой, картофелем и морковью."
   },
   {
     id: 2,
-    name: 'Харчо',
-    category: 'soups',
+    name: "Харчо",
+    category: "soups",
     weight: 300,
     kcal: 318,
     proteins: 15,
     fats: 18,
     carbs: 24,
     purchasePrice: 220,
-    price: 253,
-    image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600',
-    description: 'Густой мясной суп с рисом и специями.'
+    price: 320,
+    images: ["assets/images/kharcho-1.jpg", "assets/images/kharcho-2.jpg"],
+    description: "Острая грузинская харчо с говядиной, рисом и чесноком."
   },
   {
     id: 3,
-    name: 'Солянка',
-    category: 'soups',
+    name: "Солянка сборная мясная",
+    category: "soups",
     weight: 300,
     kcal: 309,
     proteins: 15,
     fats: 21,
     carbs: 15,
     purchasePrice: 235,
-    price: 270,
-    image: 'https://images.unsplash.com/photo-1603105037880-880cd4f6be00?w=600',
-    description: 'Солянка с мясным ассорти, оливками и лимоном.'
+    price: 320,
+    images: ["assets/images/solyanka-1.jpg", "assets/images/solyanka-2.jpg"],
+    description: "Классическая мясная солянка с солёными огурцами, беконом и оливками."
   },
   {
     id: 4,
-    name: 'Борщ',
-    category: 'soups',
+    name: "Борщ кубанский",
+    category: "soups",
     weight: 300,
     kcal: 189,
     proteins: 12,
     fats: 9,
     carbs: 15,
     purchasePrice: 220,
-    price: 253,
-    image: 'https://images.unsplash.com/photo-1583608564779-89ec0d3b29c9?w=600',
-    description: 'Традиционный борщ со свёклой и говядиной.'
+    price: 320,
+    images: ["assets/images/borsch-1.jpg", "assets/images/borsch-2.jpg"],
+    description: "Традиционный кубанский борщ со свёклой, капустой и говядиной."
   },
   {
     id: 5,
-    name: 'Плов с курицей',
-    category: 'mains',
+    name: "Плов с курицей",
+    category: "mains",
     weight: 250,
-    kcal: 425,
+    kcal: 428,
     proteins: 15,
-    fats: 15,
-    carbs: 52,
+    fats: 18,
+    carbs: 53,
     purchasePrice: 210,
-    price: 242,
-    image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=600',
-    description: 'Рассыпчатый плов с курицей и специями.'
+    price: 320,
+    images: ["assets/images/plov-chicken-1.jpg", "assets/images/plov-chicken-2.jpg"],
+    description: "Рассыпчатый плов с курицей, морковью и специями."
   },
   {
     id: 6,
-    name: 'Говядина с гречкой',
-    category: 'mains',
+    name: "Говядина с гречкой",
+    category: "mains",
     weight: 250,
-    kcal: 375,
+    kcal: 385,
     proteins: 20,
     fats: 15,
-    carbs: 42,
+    carbs: 43,
     purchasePrice: 230,
-    price: 265,
-    image: 'https://images.unsplash.com/photo-1604908177021-29e7e0a3f2f6?w=600',
-    description: 'Тушёная говядина с рассыпчатой гречкой.'
+    price: 320,
+    images: ["assets/images/beef-buckwheat-1.jpg", "assets/images/beef-buckwheat-2.jpg"],
+    description: "Тушёная говядина с гречневой кашей, луком и морковью."
   },
   {
     id: 7,
-    name: 'Курица с гречкой',
-    category: 'mains',
-    weight: null, // Уточняется
+    name: "Курица с гречкой",
+    category: "mains",
+    weight: 250,
     kcal: 385,
-    proteins: 17.5,
+    proteins: 18,
     fats: 15,
     carbs: 45,
-    purchasePrice: 229,
-    price: 263,
-    image: 'https://images.unsplash.com/photo-1598515213692-d01e7a087c10?w=600',
-    description: 'Куриное филе с гречневой кашей.'
+    purchasePrice: 195,
+    price: 320,
+    images: ["assets/images/chicken-buckwheat-1.jpg", "assets/images/chicken-buckwheat-2.jpg"],
+    description: "Нежная курица с гречкой в насыщенном бульоне."
   },
   {
     id: 8,
-    name: 'Свинина с гречкой',
-    category: 'mains',
+    name: "Свинина с гречкой",
+    category: "mains",
     weight: 250,
-    kcal: 395,
-    proteins: 17.5,
-    fats: 17.5,
-    carbs: 42,
-    purchasePrice: 224,
-    price: 258,
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600',
-    description: 'Свинина с гречневой кашей.'
+    kcal: 398,
+    proteins: 18,
+    fats: 18,
+    carbs: 43,
+    purchasePrice: 190,
+    price: 320,
+    images: ["assets/images/pork-buckwheat-1.jpg", "assets/images/pork-buckwheat-2.jpg"],
+    description: "Сочная свинина с гречневой кашей и овощами."
   },
   {
     id: 9,
-    name: 'Макароны по-флотски',
-    category: 'mains',
-    weight: null, // Уточняется
-    kcal: null,   // Уточняется (расчётное 526 ккал не подтверждено)
+    name: "Макароны по-флотски с курицей",
+    category: "mains",
+    weight: 250,
+    kcal: 520,
     proteins: 20,
-    fats: 22,
-    carbs: 62,
-    purchasePrice: 240,
-    price: 276,
-    image: 'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=600',
-    description: 'Макароны с мясным фаршем.'
+    fats: 20,
+    carbs: 65,
+    purchasePrice: 220,
+    price: 320,
+    images: ["assets/images/pasta-flotski-1.jpg", "assets/images/pasta-flotski-2.jpg"],
+    description: "Любимые макароны по-флотски с кусочками курицы."
   },
   {
     id: 10,
-    name: 'Говядина с гороховой кашей',
-    category: 'mains',
-    weight: null, // Уточняется
+    name: "Говядина с гороховой кашей",
+    category: "mains",
+    weight: 250,
     kcal: 355,
-    proteins: 22,
+    proteins: 23,
     fats: 15,
-    carbs: 32,
-    purchasePrice: 220,
-    price: 253,
-    image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600',
-    description: 'Тушёная говядина с гороховой кашей.'
+    carbs: 33,
+    purchasePrice: 180,
+    price: 320,
+    images: ["assets/images/beef-pea-1.jpg", "assets/images/beef-pea-2.jpg"],
+    description: "Тушёная говядина с нежной гороховой кашей."
   },
   {
     id: 11,
-    name: 'Мясные чипсы',
-    category: 'snacks',
+    name: "Чипсы свиные классические",
+    category: "snacks",
     weight: 50,
-    kcal: null,   // Уточняется
-    proteins: 15,
-    fats: null,   // Уточняется
-    carbs: null,  // Уточняется
+    kcal: 160,
+    proteins: 22,
+    fats: 15,
+    carbs: 0,
     purchasePrice: 200,
-    price: 230,
-    image: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=600',
-    description: 'Запечённые мясные чипсы.'
+    price: 320,
+    images: ["assets/images/chips-1.jpg", "assets/images/chips-2.jpg"],
+    description: "Хрустящие вяленые чипсы из нежирной свинины."
   }
 ];
 

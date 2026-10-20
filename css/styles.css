@@ -2,21 +2,23 @@
    Базовые переменные и сброс
    =========================== */
 :root {
-  --color-primary: #0f766e;
-  --color-primary-dark: #0b554f;
-  --color-primary-light: #ccfbf1;
-  --color-accent: #f59e0b;
-  --color-text: #1f2937;
-  --color-text-muted: #6b7280;
-  --color-bg: #ffffff;
-  --color-bg-alt: #f9fafb;
-  --color-border: #e5e7eb;
-  --radius: 14px;
-  --radius-sm: 10px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
-  --container: 1120px;
+  --color-primary: #82ad51;
+  --color-primary-dark: #6f9445;
+  --color-primary-light: #bed4a4;
+  
+  --color-bg: #b1afa2;       /* Основной фон страницы */
+  --color-bg-alt: #ffffff;   /* Фон карточек, шапки, модалок */
+  
+  --color-text: #2d3c1c;     /* Основной текст (заголовки) */
+  --color-text-muted: #4c542c; /* Второстепенный текст */
+  --color-border: #848274;   /* Рамки и разделители */
+
+  --shadow-sm: 0 1px 2px rgba(45, 60, 28, 0.05);
+  --shadow-md: 0 4px 6px rgba(45, 60, 28, 0.07);
+  --shadow-lg: 0 10px 15px rgba(45, 60, 28, 0.1);
+  
+  --radius: 12px;
+  --radius-sm: 8px;
   --transition: 0.2s ease;
 }
 
@@ -25,9 +27,9 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: var(--color-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -50,13 +52,12 @@ a { color: inherit; text-decoration: none; }
 .header {
   position: sticky;
   top: 0;
-  background: rgba(255,255,255,0.98);
+  background: var(--color-bg-alt);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
   z-index: 1000;
 }
-
 .header__inner {
   display: flex;
   align-items: center;
@@ -149,13 +150,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav__link--cart {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--color-bg-alt);
-  color: inherit;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: none;
+  transition: var(--transition);
 }
 
+.nav__link--cart:hover,
+.nav__link--cart:focus {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark); /* Теперь текст станет таким же зелёным, как у других пунктов! */
+}
 
 .cart-count {
   background: var(--color-primary);
@@ -203,9 +208,15 @@ a { color: inherit; text-decoration: none; }
 }
 
 .btn--sm {
-  padding: 8px 14px;
-  font-size: 14px;
+  padding: 7px 8px;
+  font-size: clamp(11px, 3.2vw, 13px);
+  white-space: nowrap;
+  flex: none;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .btn--block {
   width: 100%;
@@ -216,9 +227,9 @@ a { color: inherit; text-decoration: none; }
    =========================== */
 .hero {
   padding: 48px 0 56px;
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, #ffffff 100%);
+  background: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-border);
 }
-
 .hero__title {
   font-size: 32px;
   line-height: 1.2;
@@ -303,7 +314,7 @@ a { color: inherit; text-decoration: none; }
    =========================== */
 .menu-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
@@ -356,25 +367,56 @@ a { color: inherit; text-decoration: none; }
   padding: 4px 8px;
   border-radius: 6px;
 }
-
-.menu-card__footer {
-  margin-top: auto;
+.menu-card__qty-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  padding-top: 8px;
 }
 
 .menu-card__price {
-  font-size: 20px;
+  font-size: clamp(15px, 4.5vw, 20px);   /* мелкий на телефоне, крупный на ПК */
   font-weight: 800;
   color: var(--color-primary-dark);
+  white-space: nowrap;                   /* ← цена больше не развалится на 2 строки */
+}
+.menu-card__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+}
+.menu-card__footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding-top: 6px;
 }
 
-.menu-card__actions {
+.menu-card__qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
   display: flex;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.menu-card__qty-btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.menu-card__qty {
+  font-weight: 700;
+  font-size: 16px;
+  min-width: 20px;
+  text-align: center;
 }
 
 /* ===========================
@@ -545,7 +587,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .map__point:hover circle:nth-child(2) {
-  fill: #0b554f;
+  fill: var(--color-primary-dark);
 }
 
 .map__point:hover { transform: scale(1.2); transform-origin: center; }
@@ -672,10 +714,9 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   z-index: 200;
   display: flex;
-  align-items: flex-start;
+  align-items: center;          
   justify-content: center;
-  padding: 16px;
-  padding-top: 80px;
+  padding: 16px;                
   overflow: hidden;
 }
 
@@ -700,16 +741,6 @@ a { color: inherit; text-decoration: none; }
   background: rgba(0,0,0,0.5);
 }
 
-.modal__content {
-  position: relative;
-  background: white;
-  border-radius: var(--radius);
-  max-width: 420px;
-  width: 100%;
-  padding: 24px 20px;
-  box-shadow: var(--shadow-lg);
-  margin: auto;
-}
 
 .modal__close {
   position: absolute;
@@ -783,35 +814,72 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   border-top: 1px solid var(--color-border);
 }
-.menu-card__qty-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+
+/* ===========================
+   Слайдер фото (2+ картинки)
+   =========================== */
+.slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;   
+  height: auto;
+  overflow: hidden;
+  background: var(--color-bg-alt);
+  touch-action: pan-y;
 }
 
-.menu-card__qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--color-primary);
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
+.slider--modal {
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.slider--empty {
+  background: var(--color-border);
+}
+
+.slider__track {
   display: flex;
-  align-items: center;
+  height: 100%;
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+.slider__img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;   /* картинка не мешает свайпу и не выделяется */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.slider__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
   justify-content: center;
+  gap: 6px;
+}
+
+.slider__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   transition: var(--transition);
 }
 
-.menu-card__qty-btn:hover {
-  background: var(--color-primary-dark);
-}
-
-.menu-card__qty {
-  font-weight: 700;
-  font-size: 16px;
-  min-width: 20px;
-  text-align: center;
+.slider__dot--active {
+  background: #ffffff;
+  width: 20px;
+  border-radius: 4px;
 }
 
 /* ===========================
@@ -863,12 +931,253 @@ a { color: inherit; text-decoration: none; }
   }
   .nav__link--cart {
     margin-left: 0;
-    background: var(--color-primary-light);
-    color: var(--color-primary-dark);
-    border-color: var(--color-primary-light);
+    background: transparent;
+    color: var(--color-text-muted);
+    border: none;
+    transition: var(--transition);
   }
-  .menu-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .nav__link--cart:hover,
+  .nav__link--cart:focus {
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark); /* И здесь тоже зелёный при наведении */
+  }
+ 
+    .menu-grid { grid-template-columns: repeat(4, 1fr); }
   .reviews-grid { grid-template-columns: repeat(3, 1fr); }
   .hero__title { font-size: 48px; }
   .quiz-result__items { grid-template-columns: repeat(3, 1fr); }
-};
+  /* Принудительно делаем основные блоки белыми на новом фоне */
+  .menu-card, 
+  .review-card, 
+  .cart-item, 
+  .cart-summary, 
+  .quiz-card, 
+  .quiz-result,
+  .modal__content,
+  .nav {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+  }
+
+/* Обновляем цвет текста внутри карточек */
+  .menu-card__title, 
+  .review-card__author, 
+  .cart-item__name,
+  .modal__title {
+    color: var(--color-text);
+  }
+
+  .menu-card__kpi-item, 
+  .review-card__text, 
+  .cart-item__price,
+  .modal__desc,
+  .modal__kpi-label {
+    color: var(--color-text-muted);
+  }
+
+/* Обновляем табы (фильтры) */
+  .tab {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+.tab--active {
+  background: var(--color-primary-light);
+  color: var(--color-text);
+  border-color: var(--color-primary-light);
+}
+
+/* Обновляем кнопки */
+.btn--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.btn--ghost:hover {
+  background: var(--color-primary-light);
+  color: var(--color-text);
+  border-color: var(--color-primary-light);
+}
+}
+/* ===========================
+   Компактный режим: 2 карточки в ряд на телефоне
+   =========================== */
+
+@media (max-width: 639px) {
+  .container { padding: 0 10px; }
+
+  .menu-grid { gap: 8px; }
+
+  .menu-card__body { padding: 9px; gap: 6px; }
+
+  .menu-card__title { font-size: 13px; line-height: 1.2; }
+
+  .menu-card__kpi { gap: 4px; font-size: 10px; }
+  .menu-card__kpi-item { padding: 3px 5px; border-radius: 5px; }
+
+  /* нижняя часть — строго столбик: цена, потом кнопки */
+  .menu-card__footer {
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 6px;
+    padding-top: 4px;
+  }
+
+  .menu-card__price {
+    font-size: 15px;
+    white-space: nowrap !important;
+  }
+
+  /* ГЛАВНОЕ: кнопки = две равные ячейки сетки, которые не вылезают наружу */
+  .menu-card__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+    width: 100%;
+  }
+
+  .menu-card__actions .btn--sm {
+    flex: none;                 /* отменяем старое растягивание */
+    min-width: 0;               /* разрешаем сжиматься ниже текста */
+    padding: 7px 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;           /* страхка: ничего не вылезает за рамку */
+    text-overflow: ellipsis;    /* если не влезет — «…», а не съезд */
+  }
+
+  /* контроллер «− 1 +» тоже сажаем в свою ячейку по центру */
+  .menu-card__actions .menu-card__qty-controls {
+    flex: none;
+    min-width: 0;
+    justify-content: center;
+  }
+  .menu-card__qty-btn { width: 24px; height: 24px; font-size: 13px; }
+  .menu-card__qty { font-size: 13px; }
+}
+/* ===========================
+   Модалка целиком без скролла на ноуте/десктопе
+   =========================== */
+@media (min-width: 640px) {
+  .modal__content {
+    max-width: 420px;
+    margin: 0 auto;
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;           /* фолбэк: в норме скролла не будет */
+  }
+
+  /* фото в модалке — ЦЕЛИКОМ, без обрезки, на белой подложке */
+  .modal .slider,
+  .modal .menu-card__image {
+    aspect-ratio: auto;
+    height: 300px;
+    max-height: 45vh;
+    flex: 0 0 auto;
+    background: #ffffff;
+  }
+  .modal .slider__img,
+  .modal .menu-card__image {
+    object-fit: contain;        /* ← вписать упаковку целиком, не резать */
+    background: #ffffff;
+  }
+
+  .modal__title { font-size: 20px; margin-bottom: 0; line-height: 1.2; }
+  .modal__desc  { font-size: 14px; margin-bottom: 0; line-height: 1.4; }
+
+  /* КБЖУ в 3 колонки = 2 ряда вместо 3 */
+  .modal__kpi {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .modal__kpi-item  { padding: 8px 10px; font-size: 12px; }
+  .modal__kpi-label { font-size: 11px; margin-bottom: 2px; }
+  .modal__kpi-value { font-size: 16px; }
+
+  .modal__content .btn,
+  .modal__content .menu-card__qty-controls {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-size: 14px;
+  }
+  .modal__content .menu-card__qty-btn { width: 28px; height: 28px; font-size: 15px; }
+}
+/* ===========================
+   Модалка целиком без скролла на телефоне
+   =========================== */
+@media (max-width: 639px) {
+  .modal {
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal__content {
+    max-width: 320px;                 /* ← окно стало УЖЕ, поля по бокам */
+    margin: 0 auto;
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* фото в модалке — ЦЕЛИКОМ, без обрезки, на белой подложке */
+  .modal .slider,
+  .modal .menu-card__image,
+  .modal__image {
+    aspect-ratio: auto;               /* отключаем принудительную пропорцию */
+    height: 32vh;                     /* фикс высота → скролл не вернётся */
+    max-height: 240px;
+    flex: 0 0 auto;
+    background: #ffffff;              /* поля по бокам белые, сливаются с окном */
+  }
+  .modal .slider__img,
+  .modal .menu-card__image,
+  .modal__image {
+    object-fit: contain;              /* ← вписать целиком, не резать */
+    background: #ffffff;
+  }
+
+  .modal__title { font-size: 18px; margin-bottom: 0; line-height: 1.2; }
+  .modal__desc  { font-size: 13px; margin-bottom: 0; line-height: 1.35; }
+
+  .modal__kpi {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 0;
+  }
+  .modal__kpi-item  { padding: 7px 6px; font-size: 11px; }
+  .modal__kpi-label { font-size: 10px; margin-bottom: 2px; }
+  .modal__kpi-value { font-size: 14px; }
+
+  .modal__content .btn,
+  .modal__content .menu-card__qty-controls {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-size: 13px;
+  }
+  .modal__content .menu-card__qty-btn { width: 26px; height: 26px; font-size: 14px; }
+}
+/* Ноуты и широкие экраны: 5 карточек в ряд */
+@media (min-width: 1200px) {
+  .menu-grid { grid-template-columns: repeat(5, 1fr); }
+}

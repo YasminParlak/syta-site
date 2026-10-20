@@ -1,5 +1,84 @@
 // Рендер меню: карточки, табы, модалка.
+/* ---------- Слайдер: вспомогательные функции ---------- */
 
+// Превращает поле блюда в массив картинок (терпит и image:"...", и images:[...])
+function getImages(item) {
+  if (Array.isArray(item.images)) return item.images.filter(Boolean);
+  if (item.image) return [item.image];
+  return [];
+}
+
+// Генерирует HTML слайдера (или одной картинки, если их одна)
+function sliderHtml(imgs, alt, extraClass = '') {
+  if (!imgs.length) return `<div class="slider slider--empty ${extraClass}"></div>`;
+  if (imgs.length === 1) {
+    return `<img class="menu-card__image" src="${imgs[0]}" alt="${alt}" loading="lazy" draggable="false">`;
+  }
+  const slides = imgs
+    .map(src => `<img class="slider__img" src="${src}" alt="${alt}" loading="lazy" draggable="false">`)
+    .join('');
+  const dots = imgs
+    .map((_, i) => `<button type="button" class="slider__dot${i === 0 ? ' slider__dot--active' : ''}" aria-label="Фото ${i + 1}"></button>`)
+    .join('');
+  return `
+    <div class="slider ${extraClass}">
+      <div class="slider__track">${slides}</div>
+      <div class="slider__dots">${dots}</div>
+    </div>`;
+}
+
+// Навешивает свайп + клики по точкам на все слайдеры внутри root
+function initSliders(root) {
+  root.querySelectorAll('.slider').forEach(slider => {
+    const track = slider.querySelector('.slider__track');
+    const dots = Array.from(slider.querySelectorAll('.slider__dot'));
+    if (dots.length <= 1) return;
+
+    let index = 0;
+
+    const goTo = (i) => {
+      index = Math.max(0, Math.min(dots.length - 1, i));
+      track.style.transition = 'transform 0.3s ease';
+      track.style.transform = `translateX(${-index * 100}%)`;
+      dots.forEach((d, di) => d.classList.toggle('slider__dot--active', di === index));
+    };
+
+    dots.forEach((d, di) =>
+      d.addEventListener('click', (e) => { e.stopPropagation(); goTo(di); })
+    );
+
+    // --- свайп (touch + мышь) ---
+    let startX = 0, deltaX = 0, dragging = false;
+
+    const onStart = (x) => { dragging = true; startX = x; deltaX = 0; track.style.transition = 'none'; };
+    const onMove  = (x) => {
+      if (!dragging) return;
+      deltaX = x - startX;
+      track.style.transform = `translateX(calc(${-index * 100}% + ${deltaX}px))`;
+    };
+    const onEnd = () => {
+      if (!dragging) return;
+      dragging = false;
+      const threshold = track.offsetWidth * 0.2;
+      if (deltaX < -threshold) goTo(index + 1);
+      else if (deltaX > threshold) goTo(index - 1);
+      else goTo(index);
+    };
+
+    slider.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
+    slider.addEventListener('touchmove',  e => onMove(e.touches[0].clientX),  { passive: true });
+    slider.addEventListener('touchend',   onEnd);
+
+    slider.addEventListener('mousedown', e => {
+      e.preventDefault();
+      onStart(e.clientX);
+      const move = ev => onMove(ev.clientX);
+      const up   = () => { onEnd(); document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    });
+  });
+}
 const Menu = {
   currentCategory: 'all',
 
@@ -69,7 +148,7 @@ const Menu = {
    renderCard(item) {
     const fmt = MenuData.formatValue;
     const inCart = Cart.items[item.id] || 0;
-    
+
     const actionsHtml = inCart > 0 ? `
       <div class="menu-card__qty-controls">
         <button class="menu-card__qty-btn" data-action="dec" data-id="${item.id}">−</button>
@@ -79,10 +158,10 @@ const Menu = {
     ` : `
       <button class="btn btn--primary btn--sm" data-action="add-to-cart" data-id="${item.id}">В корзину</button>
     `;
-    
+
     return `
       <article class="menu-card">
-        <img class="menu-card__image" src="${item.image}" alt="${item.name}" loading="lazy">
+        ${sliderHtml(getImages(item), item.name)}
         <div class="menu-card__body">
           <h3 class="menu-card__title">${item.name}</h3>
           <div class="menu-card__kpi">
@@ -111,7 +190,8 @@ const Menu = {
     const fmt = MenuData.formatValue;
     const body = document.getElementById('modalBody');
     body.innerHTML = `
-      <img class="modal__image" src="${item.image}" alt="${item.name}">
+      
+      ${sliderHtml(getImages(item), item.name, 'slider--modal')}
       <h3 class="modal__title">${item.name}</h3>
       <p class="modal__desc">${item.description}</p>
       <div class="modal__kpi">
@@ -144,11 +224,13 @@ const Menu = {
         Добавить в корзину
       </button>
     `;
+    initSliders(body);
 
     body.querySelector('[data-action="add-to-cart"]').addEventListener('click', () => {
       Cart.add(id);
       this.renderGrid(); // Обновляем меню
       Modal.close();
+      initSliders(grid);
     });
 
    const nav = document.getElementById('nav');

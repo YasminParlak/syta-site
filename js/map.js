@@ -18,15 +18,15 @@ const Map = {
           </pattern>
         </defs>
         <rect width="100" height="100" fill="url(#grid)"/>
-        <path d="M 5 50 Q 30 30 50 50 T 95 50" stroke="#0f766e" stroke-width="0.8" fill="none" opacity="0.4"/>
-        <path d="M 50 5 Q 40 40 50 60 T 50 95" stroke="#0f766e" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <path d="M 5 50 Q 30 30 50 50 T 95 50" stroke="#82ad51" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <path d="M 50 5 Q 40 40 50 60 T 50 95" stroke="#82ad51" stroke-width="0.8" fill="none" opacity="0.4"/> 
         ${this.points.map(p => `
-          <g class="map__point" data-id="${p.id}" data-label="${p.label}">
-            <circle cx="${p.x}" cy="${p.y}" r="3" fill="#0f766e" opacity="0.25"/>
-            <circle cx="${p.x}" cy="${p.y}" r="1.6" fill="#0f766e"/>
-            <circle cx="${p.x}" cy="${p.y}" r="0.6" fill="white"/>
-          </g>
-        `).join('')}
+        <g class="map__point" data-id="${p.id}" data-label="${p.label}">
+          <circle cx="${p.x}" cy="${p.y}" r="3" fill="#82ad51" opacity="0.25"/>
+          <circle cx="${p.x}" cy="${p.y}" r="1.6" fill="#82ad51"/>
+          <circle cx="${p.x}" cy="${p.y}" r="0.6" fill="white"/>
+        </g>
+       `).join('')}
       </svg>
       <div class="map__legend" id="mapLegend">Нажмите на точку, чтобы увидеть адрес</div>
     `;
