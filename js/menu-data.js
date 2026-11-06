@@ -1,7 +1,13 @@
-// Данные меню — единый источник правды.
-// Все цены пересчитаны: закупочная × 1.15, округлено до целого.
-// Если характеристика неизвестна — null (на фронте отображается как «Уточняется»).
+function getImages(item) {
+  if (Array.isArray(item.images)) return item.images.filter(Boolean);
+  if (item.image) return [item.image];
+  return [];
+}
 
+function getThumb(item) {
+  const imgs = getImages(item);
+  return imgs[1] || imgs[0] || '';
+}
 const MENU_ITEMS = [
     {
     id: 1,
