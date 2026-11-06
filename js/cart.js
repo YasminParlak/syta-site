@@ -82,7 +82,7 @@ const Cart = {
       const qty = this.items[id];
       return `
         <div class="cart-item">
-          <img class="cart-item__image" src="${item.image}" alt="${item.name}">
+          <img class="cart-item__image" src="${getThumb(item)}" alt="${item.name}">
           <div class="cart-item__info">
             <div class="cart-item__name">${item.name}</div>
             <div class="cart-item__price">${MenuData.formatPrice(item.price)} × ${qty} = ${MenuData.formatPrice(item.price * qty)}</div>
