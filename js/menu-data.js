@@ -8,6 +8,7 @@ function getThumb(item) {
   const imgs = getImages(item);
   return imgs[1] || imgs[0] || '';
 }
+
 const MENU_ITEMS = [
     {
     id: 1,
