@@ -1,13 +1,61 @@
 // Опросник: 3 вопроса с ветвлением второго.
+// Карточки в результате = копия карточек меню (Menu.renderCard) + модалка (Menu.openModal).
 
 const Quiz = {
-  step: 0,             // текущий шаг: 0 = q1, 1 = q2, 2 = q3, 3 = результат
+  step: 0,             // 0 = q1, 1 = q2, 2 = q3, 3 = результат
   answers: {},         // { q1: 'A', q2: 'A1', q3: 'A' }
   container: null,
 
   init() {
     this.container = document.getElementById('quizContainer');
+    this.bindDelegation();   // одно делегирование на весь срок жизни контейнера
     this.render();
+  },
+
+  // Ловит клики по кнопкам с data-action внутри контейнера опроса.
+  bindDelegation() {
+    this.container.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const id = Number(btn.dataset.id);
+      let cartChanged = false;
+
+      switch (action) {
+        case 'details':
+          Menu.openModal(id);          // открывает модалку со слайдером
+          return;                      // корзину не меняли — перерисовка не нужна
+
+        case 'add-to-cart':
+          Cart.add(id);
+          cartChanged = true;
+          break;
+
+        case 'inc':
+          Cart.changeQty(id, 1);       // используем твой метод из cart.js
+          cartChanged = true;
+          break;
+
+        case 'dec':
+          Cart.changeQty(id, -1);      // используем твой метод из cart.js
+          cartChanged = true;
+          break;
+
+        case 'restart':
+          this.restart();
+          return;
+
+        default:
+          return;
+      }
+
+      // Если корзину изменили, перерисовываем результат, 
+      // чтобы контроллер «− 1 +» обновился (как в главном меню)
+      if (cartChanged && this.step === 3) {
+        this.renderResult();
+      }
+    });
   },
 
   render() {
@@ -96,6 +144,7 @@ const Quiz = {
     });
   },
 
+  // Результат: карточки рисует Menu.renderCard — 1:1 как в меню
   renderResult() {
     const result = QUIZ.results[this.answers.q1];
     const items = Recommendations.compute(this.answers);
@@ -105,43 +154,14 @@ const Quiz = {
         <h3 class="quiz-result__title">${result.title}</h3>
         <p class="quiz-result__text">${result.text}</p>
         <div class="quiz-result__items">
-          ${items.map(item => this.renderResultCard(item)).join('')}
+          ${items.map(item => Menu.renderCard(item)).join('')}
         </div>
-        <button class="btn btn--primary btn--block" id="quizRestart">Пройти ещё раз</button>
+        <button class="btn btn--primary btn--block" data-action="restart">Пройти ещё раз</button>
       </div>
     `;
 
-    document.getElementById('quizRestart').addEventListener('click', () => {
-      this.restart();
-    });
-
-    // Кнопки «В корзину» в карточках рекомендаций
-    this.container.querySelectorAll('[data-action="add-to-cart"]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        Cart.add(Number(btn.dataset.id));
-      });
-    });
-  },
-
-  renderResultCard(item) {
-    const fmt = MenuData.formatValue;
-    return `
-      <article class="menu-card">
-        <img class="menu-card__image" src="${item.image}" alt="${item.name}" loading="lazy">
-        <div class="menu-card__body">
-          <h3 class="menu-card__title">${item.name}</h3>
-          <div class="menu-card__kpi">
-            <span class="menu-card__kpi-item">${fmt(item.weight, 'г')}</span>
-            <span class="menu-card__kpi-item">${fmt(item.kcal, 'ккал')}</span>
-            <span class="menu-card__kpi-item">Б ${fmt(item.proteins, 'г')}</span>
-          </div>
-          <div class="menu-card__footer">
-            <span class="menu-card__price">${MenuData.formatPrice(item.price)}</span>
-            <button class="btn btn--primary btn--sm" data-action="add-to-cart" data-id="${item.id}">В корзину</button>
-          </div>
-        </div>
-      </article>
-    `;
+    // Оживляем слайдеры внутри карточек результата (свайп + точки)
+    initSliders(this.container);
   },
 
   bindOptions(callback) {
@@ -149,7 +169,6 @@ const Quiz = {
       btn.addEventListener('click', () => {
         this.container.querySelectorAll('.quiz__option').forEach(b => b.classList.remove('quiz__option--selected'));
         btn.classList.add('quiz__option--selected');
-        // Небольшая задержка для визуального отклика
         setTimeout(() => callback(btn.dataset.value), 180);
       });
     });
